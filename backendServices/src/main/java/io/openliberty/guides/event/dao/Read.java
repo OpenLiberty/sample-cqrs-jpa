@@ -20,6 +20,7 @@ import io.openliberty.guides.event.models.Event;
 
 import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class Read implements ReadInterface{
 	 @PersistenceContext(name = "jpa-unit")
 	    private EntityManager em_read;
