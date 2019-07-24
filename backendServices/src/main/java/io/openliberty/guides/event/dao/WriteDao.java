@@ -12,6 +12,7 @@
 // end::copyright[]
 package io.openliberty.guides.event.dao;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -20,17 +21,17 @@ import io.openliberty.guides.event.models.Event;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
-public class Write implements WriteInterface{
-	
-	@PersistenceContext(name = "jpa-unit")
-	private EntityManager em_write;
-	
-	public void createEvent(Event event){
-		em_write.persist(event);
-	}
+public class WriteDao {
+    @PersistenceContext(name = "jpa-unit")
+    private EntityManager em;
 
-    public void updateEvent(Event event){
-    	em_write.merge(event);
+    public void createEvent(Event event) {
+        em.persist(event);
+    }
+
+
+    public void updateEvent(Event event) {
+        em.merge(event);
     }
 
     public void deleteEvent(Event event) {
