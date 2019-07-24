@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018, 2019 IBM Corporation and others.
+ * Copyright (c) 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,21 +32,19 @@ import javax.ws.rs.core.Response;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import io.openliberty.guides.event.dao.EventDao;
-import io.openliberty.guides.event.dao.Read;
-import io.openliberty.guides.event.dao.Write;
+import io.openliberty.guides.event.dao.ReadDao;
+import io.openliberty.guides.event.dao.WriteDao;
 import io.openliberty.guides.event.models.Event;
 
 @RequestScoped
 @Path("events")
 public class EventResource {
-    
+
     @Inject
-    private Read readEvent;
-    
+    private ReadDao readDAO;
+
     @Inject
-    private Write writeEvent;
-    
+    private WriteDao writeDAO;
 
     /**
      * This method creates a new event from the submitted data (name, time and
@@ -58,10 +56,11 @@ public class EventResource {
     public Response addNewEvent(@FormParam("name") String name,
         @FormParam("time") String time, @FormParam("location") String location) {
         Event newEvent = new Event(name, location, time);
-        if(!readEvent.findEvent(name, location, time).isEmpty()){
-            return Response.status(Response.Status.BAD_REQUEST).entity("Event already exists").build();
+        if(!readDAO.findEvent(name, location, time).isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity("Event already exists").build();
         }
-        writeEvent.createEvent(newEvent);
+        writeDAO.createEvent(newEvent);
         return Response.status(Response.Status.NO_CONTENT).build(); 
     }
 
@@ -76,12 +75,12 @@ public class EventResource {
     public Response updateEvent(@FormParam("name") String name,
         @FormParam("time") String time, @FormParam("location") String location,
         @PathParam("id") int id) {
-        Event prevEvent = readEvent.readEvent(id);
+        Event prevEvent = readDAO.readEvent(id);
         if(prevEvent == null) {
             return Response.status(Response.Status.NOT_FOUND)
                            .entity("Event does not exist").build();
         }
-        if(!readEvent.findEvent(name, location, time).isEmpty()) {
+        if(!readDAO.findEvent(name, location, time).isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                            .entity("Event already exists").build();
         }
@@ -89,7 +88,7 @@ public class EventResource {
         prevEvent.setLocation(location);
         prevEvent.setTime(time);
 
-        writeEvent.updateEvent(prevEvent);
+        writeDAO.updateEvent(prevEvent);
         return Response.status(Response.Status.NO_CONTENT).build(); 
     }
 
@@ -100,12 +99,12 @@ public class EventResource {
     @Path("{id}")
     @Transactional
     public Response deleteEvent(@PathParam("id") int id) {
-        Event event = readEvent.readEvent(id);
+        Event event = readDAO.readEvent(id);
         if(event == null) {
             return Response.status(Response.Status.NOT_FOUND)
                            .entity("Event does not exist").build();
         }
-        writeEvent.deleteEvent(event);
+        writeDAO.deleteEvent(event);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
@@ -118,7 +117,7 @@ public class EventResource {
     @Transactional
     public JsonObject getEvent(@PathParam("id") int eventId) {
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        Event event = readEvent.readEvent(eventId);
+        Event event = readDAO.readEvent(eventId);
         if(event != null) {
             builder.add("name", event.getName()).add("time", event.getTime())
                 .add("location", event.getLocation()).add("id", event.getId());
@@ -135,7 +134,7 @@ public class EventResource {
     public JsonArray getEvents() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder finalArray = Json.createArrayBuilder();
-        for (Event event : readEvent.readAllEvents()) {
+        for (Event event : readDAO.readAllEvents()) {
             builder.add("name", event.getName()).add("time", event.getTime())
                    .add("location", event.getLocation()).add("id", event.getId());
             finalArray.add(builder.build());

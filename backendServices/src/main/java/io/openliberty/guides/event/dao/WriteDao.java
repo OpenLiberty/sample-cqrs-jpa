@@ -20,9 +20,21 @@ import io.openliberty.guides.event.models.Event;
 
 import javax.enterprise.context.RequestScoped;
 
-public interface ReadInterface{
-	  public Event readEvent(int eventId);
-	  public List<Event> readAllEvents();
-	  public List<Event> findEvent(String name, String location, String time);
-}
+@RequestScoped
+public class WriteDao {
+    @PersistenceContext(name = "jpa-unit")
+    private EntityManager em;
 
+    public void createEvent(Event event) {
+        em.persist(event);
+    }
+
+
+    public void updateEvent(Event event) {
+        em.merge(event);
+    }
+
+    public void deleteEvent(Event event) {
+        em.remove(event);
+    }
+}
