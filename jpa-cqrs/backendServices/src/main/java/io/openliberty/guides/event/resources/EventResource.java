@@ -32,7 +32,8 @@ import javax.ws.rs.core.Response;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import io.openliberty.guides.event.dao.EventDao;
+import io.openliberty.guides.event.dao.ReadDao;
+import io.openliberty.guides.event.dao.WriteDao;
 import io.openliberty.guides.event.models.Event;
 
 @RequestScoped
@@ -40,7 +41,10 @@ import io.openliberty.guides.event.models.Event;
 public class EventResource {
 
     @Inject
-    private EventDao eventDAO;
+    private ReadDao readDAO;
+
+    @Inject
+    private WriteDao writeDAO;
 
     /**
      * This method creates a new event from the submitted data (name, time and
@@ -52,11 +56,11 @@ public class EventResource {
     public Response addNewEvent(@FormParam("name") String name,
         @FormParam("time") String time, @FormParam("location") String location) {
         Event newEvent = new Event(name, location, time);
-        if(!eventDAO.findEvent(name, location, time).isEmpty()) {
+        if(!readDAO.findEvent(name, location, time).isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                            .entity("Event already exists").build();
         }
-        eventDAO.createEvent(newEvent);
+        writeDAO.createEvent(newEvent);
         return Response.status(Response.Status.NO_CONTENT).build(); 
     }
 
@@ -71,12 +75,12 @@ public class EventResource {
     public Response updateEvent(@FormParam("name") String name,
         @FormParam("time") String time, @FormParam("location") String location,
         @PathParam("id") int id) {
-        Event prevEvent = eventDAO.readEvent(id);
+        Event prevEvent = readDAO.readEvent(id);
         if(prevEvent == null) {
             return Response.status(Response.Status.NOT_FOUND)
                            .entity("Event does not exist").build();
         }
-        if(!eventDAO.findEvent(name, location, time).isEmpty()) {
+        if(!readDAO.findEvent(name, location, time).isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                            .entity("Event already exists").build();
         }
@@ -84,7 +88,7 @@ public class EventResource {
         prevEvent.setLocation(location);
         prevEvent.setTime(time);
 
-        eventDAO.updateEvent(prevEvent);
+        writeDAO.updateEvent(prevEvent);
         return Response.status(Response.Status.NO_CONTENT).build(); 
     }
 
@@ -95,12 +99,12 @@ public class EventResource {
     @Path("{id}")
     @Transactional
     public Response deleteEvent(@PathParam("id") int id) {
-        Event event = eventDAO.readEvent(id);
+        Event event = readDAO.readEvent(id);
         if(event == null) {
             return Response.status(Response.Status.NOT_FOUND)
                            .entity("Event does not exist").build();
         }
-        eventDAO.deleteEvent(event);
+        writeDAO.deleteEvent(event);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
@@ -113,7 +117,7 @@ public class EventResource {
     @Transactional
     public JsonObject getEvent(@PathParam("id") int eventId) {
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        Event event = eventDAO.readEvent(eventId);
+        Event event = readDAO.readEvent(eventId);
         if(event != null) {
             builder.add("name", event.getName()).add("time", event.getTime())
                 .add("location", event.getLocation()).add("id", event.getId());
@@ -130,7 +134,7 @@ public class EventResource {
     public JsonArray getEvents() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder finalArray = Json.createArrayBuilder();
-        for (Event event : eventDAO.readAllEvents()) {
+        for (Event event : readDAO.readAllEvents()) {
             builder.add("name", event.getName()).add("time", event.getTime())
                    .add("location", event.getLocation()).add("id", event.getId());
             finalArray.add(builder.build());
