@@ -16,7 +16,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import io.openliberty.guides.event.models.Event;
+import io.openliberty.guides.event.models.Music;
 
 import javax.enterprise.context.RequestScoped;
 
@@ -30,7 +30,11 @@ public class WriteDao {
     }
 
 
-    public void updateEvent(Event event) {
+/*     public void updateEvent(Event event) {
+        em.merge(event);
+    } */
+
+    public void addLike(Event event) {
         em.merge(event);
     }
 
