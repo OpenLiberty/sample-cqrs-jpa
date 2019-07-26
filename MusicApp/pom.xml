@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>io.openliberty.guides</groupId>
-    <artifactId>jpa-intro</artifactId>
+    <artifactId>cqrs</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -19,8 +19,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <backend.service.http.port>5050</backend.service.http.port>
-        <backend.service.https.port>5051</backend.service.https.port>
+        <command.service.http.port>5050</command.service.http.port>
+        <command.service.https.port>5051</command.service.https.port>
+        <query.service.http.port>6050</query.service.http.port>
+        <query.service.https.port>6051</query.service.https.port>
         <frontend.service.http.port>9090</frontend.service.http.port>
         <frontend.service.https.port>9091</frontend.service.https.port>
         <version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
@@ -111,7 +113,8 @@
     </build>
    
     <modules>
-        <module>backendServices</module>
+        <!-- <module>commandServices</module> -->
+        <module>queryServices</module>
         <module>frontendUI</module>
     </modules>
 </project>

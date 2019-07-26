@@ -25,7 +25,7 @@ import javax.persistence.GenerationType;
 @Table(name = "Music")
 @NamedQuery(name = "Music.findAll", query = "SELECT m FROM Music m")
 @NamedQuery(name = "Music.findMusic", query = "SELECT m FROM Music m WHERE "
-    + "m.name = :name AND m.artist = :artist")
+    + "m.name = :name AND m.artist = :artist AND m.likes = :likes")
 public class Music implements Serializable {
     private static final long serialVersionUID = 1L;
 

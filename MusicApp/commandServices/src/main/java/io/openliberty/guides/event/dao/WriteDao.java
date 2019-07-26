@@ -23,10 +23,10 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WriteDao {
     @PersistenceContext(name = "jpa-unit")
-    private EntityManager em;
+    private EntityManager emWrite;
 
     public void createEvent(Event event) {
-        em.persist(event);
+        emWrite.persist(event);
     }
 
 
@@ -35,10 +35,10 @@ public class WriteDao {
     } */
 
     public void addLike(Event event) {
-        em.merge(event);
+        emWrite.merge(event);
     }
 
     public void deleteEvent(Event event) {
-        em.remove(event);
+        emWrite.remove(event);
     }
 }
