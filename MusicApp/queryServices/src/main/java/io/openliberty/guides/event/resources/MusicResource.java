@@ -38,7 +38,7 @@ import io.openliberty.guides.event.models.Music;
 
 @RequestScoped
 @Path("music")
-public class EventResource {
+public class MusicResource {
 
     @Inject
     private ReadDao readDAO;
@@ -50,19 +50,19 @@ public class EventResource {
      * This method creates a new event from the submitted data (name, time and
      * location) by the user.
      */
-    // @POST
-    // @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    // @Transactional
-    // public Response addNewEvent(@FormParam("name") String name,
-    //     @FormParam("time") String time, @FormParam("location") String location) {
-    //     Event newEvent = new Event(name, location, time);
-    //     if(!readDAO.findEvent(name, location, time).isEmpty()) {
-    //         return Response.status(Response.Status.BAD_REQUEST)
-    //                        .entity("Event already exists").build();
-    //     }
-    //     writeDAO.createEvent(newEvent);
-    //     return Response.status(Response.Status.NO_CONTENT).build(); 
-    // }
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Transactional
+    public Response addNewMusic(@FormParam("name") String name,
+        @FormParam("artist") String artist, @FormParam("price") String price, @FormParam("likes") String likes) {
+        Music newMusic = new Music(name, artist, price, likes);
+        if(!readDAO.findMusic(name, artist, price, likes).isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity("Music already exists").build();
+        }
+        readDAO.createMusic(newMusic);
+        return Response.status(Response.Status.NO_CONTENT).build(); 
+    }
 
     /**
      * This method updates a new event from the submitted data (name, time and
@@ -120,7 +120,7 @@ public class EventResource {
         Music music = readDAO.readMusic(musicId);
         if(music != null) {
             builder.add("name", music.getName()).add("price", music.getPrice())
-                .add("artist", music.getArtist()).add("id", music.getId());
+                .add("artist", music.getArtist()).add("id", music.getId()).add("likes", music.getLikes());
         }
         return builder.build();
     }
@@ -135,8 +135,25 @@ public class EventResource {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder finalArray = Json.createArrayBuilder();
         for (Music music : readDAO.readAllMusic()) {
-            builder.add("name", music.getName()).add("time", music.getPrice())
-                   .add("artist", music.getArtist()).add("id", music.getId());
+            builder.add("name", music.getName()).add("price", music.getPrice())
+                   .add("artist", music.getArtist()).add("id", music.getId()).add("likes", music.getLikes());
+            finalArray.add(builder.build());
+        }
+        return finalArray.build();
+    }
+
+    /**
+     * This method returns the existing/stored music in Json format
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public JsonArray getMusic() {
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        JsonArrayBuilder finalArray = Json.createArrayBuilder();
+        for (Music music : readDAO.readAllMusic()) {
+            builder.add("name", music.getName()).add("price", music.getPrice())
+                   .add("artist", music.getArtist()).add("id", music.getId()).add("likes", music.getLikes());
             finalArray.add(builder.build());
         }
         return finalArray.build();

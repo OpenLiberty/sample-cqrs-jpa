@@ -115,10 +115,11 @@ public abstract class MusicTest {
      *  Asserts music fields (name, location, time) equal the provided name, location
      *  and date
      */
-    protected void assertData(JsonObject music, String name, String loc, String date) {
+    protected void assertData(JsonObject music, String name, String artist, String price, String likes) {
         assertEquals(music.getString("name"), name);
-        assertEquals(music.getString("location"), loc);
-        assertEquals(music.getString("time"), date);
+        assertEquals(music.getString("artist"), artist);
+        assertEquals(music.getString("price"), price);
+        assertEquals(music.getString("likes"), likes);
     }
 
 }

@@ -73,7 +73,7 @@ public class Music implements Serializable {
         return price;
     }
 
-    public void setPrice(){
+    public void setPrice(String price){
         this.price = price;
     }
 
