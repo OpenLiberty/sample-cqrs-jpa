@@ -145,17 +145,17 @@ public class MusicResource {
     /**
      * This method returns the existing/stored music in Json format
      */
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    public JsonArray getMusic() {
-        JsonObjectBuilder builder = Json.createObjectBuilder();
-        JsonArrayBuilder finalArray = Json.createArrayBuilder();
-        for (Music music : readDAO.readAllMusic()) {
-            builder.add("name", music.getName()).add("price", music.getPrice())
-                   .add("artist", music.getArtist()).add("id", music.getId()).add("likes", music.getLikes());
-            finalArray.add(builder.build());
-        }
-        return finalArray.build();
-    }
+    // @GET
+    // @Produces(MediaType.APPLICATION_JSON)
+    // @Transactional
+    // public JsonArray getMusic() {
+    //     JsonObjectBuilder builder = Json.createObjectBuilder();
+    //     JsonArrayBuilder finalArray = Json.createArrayBuilder();
+    //     for (Music music : readDAO.readAllMusic()) {
+    //         builder.add("name", music.getName()).add("price", music.getPrice())
+    //                .add("artist", music.getArtist()).add("id", music.getId()).add("likes", music.getLikes());
+    //         finalArray.add(builder.build());
+    //     }
+    //     return finalArray.build();
+    // }
 }
