@@ -1,3 +1,4 @@
+
 // tag::copyright[]
 /*******************************************************************************
  * Copyright (c) 2018 IBM Corporation and others.
@@ -10,7 +11,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.event.models;
+package io.openliberty.guides.music.models;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ import javax.persistence.GenerationType;
 @Table(name = "Music")
 @NamedQuery(name = "Music.findAll", query = "SELECT m FROM Music m")
 @NamedQuery(name = "Music.findMusic", query = "SELECT m FROM Music m WHERE "
-    + "m.name = :name AND m.artist = :artist AND m.likes = :likes")
+    + "m.name = :name AND m.artist = :artist AND m.price = :price AND m.likes = :likes ")
 public class Music implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -36,17 +37,20 @@ public class Music implements Serializable {
 
     @Column(name = "musicName")
     private String name;
-    @Column(name = "artist")
+    @Column(name = "musicArtist")
     private String artist;
-    @Column(name = "likes")
-    private int likes;
+    @Column(name= "musicPrice")
+    private String price;
+    @Column(name = "musicLikes")
+    private String likes;
 
     public Music() {
     }
 
-    public Music(String name, String artist, int likes) {
+    public Music(String name, String artist, String price, String likes) {
         this.name = name;
         this.artist = artist;
+        this.price = price;
         this.likes = likes;
     }
 
@@ -66,15 +70,23 @@ public class Music implements Serializable {
         this.artist = artist;
     }
 
+    public String getPrice(){
+        return price;
+    }
+
+    public void setPrice(String price){
+        this.price = price;
+    }
+
     public String getLikes() {
         return likes;
     }
 
-    public void setLikes(int likes) {
+    public void setLikes(String likes) {
         this.likes = likes;
     }
 
-    public void addLikes() {
+    public void addLike() {
         this.likes = this.likes += 1;
     }
 

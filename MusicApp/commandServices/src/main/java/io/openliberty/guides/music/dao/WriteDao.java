@@ -10,13 +10,13 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.event.dao;
+package io.openliberty.guides.music.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import io.openliberty.guides.event.models.Music;
+import io.openliberty.guides.music.models.Music;
 
 import javax.enterprise.context.RequestScoped;
 
@@ -25,20 +25,27 @@ public class WriteDao {
     @PersistenceContext(name = "jpa-unit")
     private EntityManager emWrite;
 
-    public void createEvent(Event event) {
-        emWrite.persist(event);
+    public void createMusic(Music music) {
+        emWrite.persist(music);
     }
 
-
-/*     public void updateEvent(Event event) {
-        em.merge(event);
-    } */
-
-    public void addLike(Event event) {
-        emWrite.merge(event);
+    public void updateMusic(Music music) {
+        emWrite.merge(music);
     }
 
-    public void deleteEvent(Event event) {
-        emWrite.remove(event);
+    public void deleteMusic(Music music) {
+        emWrite.remove(music);
+    }
+
+    public Music readMusic(int musicId){
+        return emWrite.find(Music.class, musicId);
+    };
+
+    public List<Music> findMusic(String name, String artist, String price, String likes) {
+        return emWrite.createNamedQuery("Music.findMusic", Music.class)
+            .setParameter("name", name)
+            .setParameter("artist", artist)
+            .setParameter("price", price)
+            .setParameter("likes", likes).getResultList();
     }
 }

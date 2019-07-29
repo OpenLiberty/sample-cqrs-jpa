@@ -10,7 +10,7 @@
   <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
     id="defaultHttpEndpoint" host="*" />
 
-  <application location="backendServices.war" type="war" context-root="/">
+  <application location="commandServices.war" type="war" context-root="/">
   </application>
 
   <!-- Derby Library Configuration -->    
