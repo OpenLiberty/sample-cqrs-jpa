@@ -87,7 +87,7 @@ public class Music implements Serializable {
     }
 
     public void addLike() {
-        this.likes = this.likes += 1;
+        this.likes = Integer.toString(Integer.parseInt(this.likes) + 1);
     }
 
     public void setName(String name) {
