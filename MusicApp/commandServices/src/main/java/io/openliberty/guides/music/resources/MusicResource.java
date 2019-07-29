@@ -150,9 +150,9 @@ public class MusicResource {
     public JsonArray getMusic() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder finalArray = Json.createArrayBuilder();
-        for (Music music : writeDAO.readAllMusic()) {
-            builder.add("name", music.getName()).add("artist", music.getArtist())
-                   .add("price", music.getPrice()).add("likes", music.getLikes()).add("id", music.getId());
+        for (Music music : readDAO.readAllMusic()) {
+            builder.add("name", music.getName()).add("price", music.getPrice())
+                   .add("artist", music.getArtist()).add("id", music.getId()).add("likes", music.getLikes());
             finalArray.add(builder.build());
         }
         return finalArray.build();
