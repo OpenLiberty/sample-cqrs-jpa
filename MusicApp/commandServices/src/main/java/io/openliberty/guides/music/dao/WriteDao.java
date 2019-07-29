@@ -42,7 +42,7 @@ public class WriteDao {
     };
 
     public List<Music> readAllMusic(){
-        return emRead.createNamedQuery("Music.findAll", Music.class).getResultList();
+        return emWrite.createNamedQuery("Music.findAll", Music.class).getResultList();
         
     };
 

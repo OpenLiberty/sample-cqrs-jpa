@@ -113,8 +113,8 @@
     </build>
    
     <modules>
-        <!-- <module>commandServices</module> -->
-        <module>queryServices</module>
+        <module>commandServices</module>
+        <!-- <module>queryServices</module> -->
         <module>frontendUI</module>
     </modules>
 </project>
