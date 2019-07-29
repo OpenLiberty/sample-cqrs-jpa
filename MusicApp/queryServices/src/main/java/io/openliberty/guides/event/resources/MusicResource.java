@@ -131,7 +131,7 @@ public class MusicResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public JsonArray getMusic() {
+    public JsonArray getAllMusic() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder finalArray = Json.createArrayBuilder();
         for (Music music : readDAO.readAllMusic()) {
