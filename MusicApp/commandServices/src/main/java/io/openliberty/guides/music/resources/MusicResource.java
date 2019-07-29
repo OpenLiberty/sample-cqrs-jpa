@@ -36,7 +36,7 @@ import io.openliberty.guides.music.dao.WriteDao;
 import io.openliberty.guides.music.models.Music;
 
 @RequestScoped
-@Path("musics")
+@Path("music")
 public class MusicResource {
 /* 
     @Inject
@@ -142,19 +142,19 @@ public class MusicResource {
     }
 
     /**
-     * This method returns the existing/stored musics in Json format
+     * This method returns the existing/stored  in Json format
      */
-    /* @GET
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public JsonArray getMusics() {
+    public JsonArray getMusic() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder finalArray = Json.createArrayBuilder();
-        for (Music music : writeDAO.readAllMusics()) {
+        for (Music music : writeDAO.readAllMusic()) {
             builder.add("name", music.getName()).add("artist", music.getArtist())
                    .add("price", music.getPrice()).add("likes", music.getLikes()).add("id", music.getId());
             finalArray.add(builder.build());
         }
         return finalArray.build();
-    } */
+    } 
 }

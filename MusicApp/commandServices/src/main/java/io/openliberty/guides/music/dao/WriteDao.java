@@ -41,6 +41,11 @@ public class WriteDao {
         return emWrite.find(Music.class, musicId);
     };
 
+    public List<Music> readAllMusic(){
+        return emRead.createNamedQuery("Music.findAll", Music.class).getResultList();
+        
+    };
+
     public List<Music> findMusic(String name, String artist, String price, String likes) {
         return emWrite.createNamedQuery("Music.findMusic", Music.class)
             .setParameter("name", name)
