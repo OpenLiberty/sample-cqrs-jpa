@@ -76,11 +76,11 @@ public class MusicEntityTest extends MusicTest {
     //     System.out.println(s);
     // }
 
-    @Test
-    public void testInvalidRead() {
-        assertEquals("Reading an music that does not exist should return an empty list",
-            true, getIndividualMusic(-1).isEmpty());
-    }
+    // @Test
+    // public void testInvalidRead() {
+    //     assertEquals("Reading an music that does not exist should return an empty list",
+    //         true, getIndividualMusic(-1).isEmpty());
+    // }
 
     // @Test
     // public void testInvalidDelete() {

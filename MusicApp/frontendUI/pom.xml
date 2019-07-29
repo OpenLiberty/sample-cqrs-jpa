@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>io.openliberty.guides</groupId>
-        <artifactId>jpa-intro</artifactId>
+        <artifactId>cqrs</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -88,7 +88,8 @@
                 <bootstrapProperties>
                   <default.http.port>${frontend.service.http.port}</default.http.port>
                   <default.https.port>${frontend.service.https.port}</default.https.port>
-                  <backend.port>${backend.service.http.port}</backend.port>
+                  <command.port>${command.service.http.port}</command.port>
+                  <query.port>${query.service.http.port}</query.port>
                 </bootstrapProperties>
               </configuration>
               <executions>
