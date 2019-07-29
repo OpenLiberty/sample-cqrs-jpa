@@ -26,17 +26,18 @@ public class ReadDao {
     @PersistenceContext(name = "jpa-unit")
     private EntityManager emRead;
 
-public void createMusic(Music music) {
+    public void createMusic(Music music) {
         emRead.persist(music);
     }
  
-  public Music readMusic(int musicId){
-      return emRead.find(Music.class, musicId);
-  };
-  public List<Music> readAllMusic(){
-      return emRead.createNamedQuery("Music.findAll", Music.class).getResultList();
-      
-  };
+    public Music readMusic(int musicId){
+        return emRead.find(Music.class, musicId);
+    };
+
+    public List<Music> readAllMusic(){
+        return emRead.createNamedQuery("Music.findAll", Music.class).getResultList();
+        
+    };
   
     public List<Music> findMusic(String name, String artist, String price, String likes) {
         return emRead.createNamedQuery("Music.findMusic", Music.class)
@@ -45,5 +46,11 @@ public void createMusic(Music music) {
             .setParameter("price", price)
             .setParameter("likes", likes).getResultList();
     }
+
+    public List<Music> findMusicByName(String name) {
+        return emRead.createNamedQuery("Music.findMusicByName", Music.class)
+            .setParameter("name", name).getResultList();
+    }
+    
  
 }
