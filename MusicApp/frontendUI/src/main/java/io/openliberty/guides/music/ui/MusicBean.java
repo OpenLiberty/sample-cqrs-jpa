@@ -23,6 +23,8 @@ import javax.ws.rs.BadRequestException;
 import io.openliberty.guides.music.ui.facelets.PageDispatcher;
 import io.openliberty.guides.music.ui.util.TimeMapUtil;
 import io.openliberty.guides.music.client.MusicClient;
+import io.openliberty.guides.music.client.QueryClient;
+import io.openliberty.guides.music.client.CommandClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import io.openliberty.guides.music.client.UnknownUrlException;
 
@@ -55,9 +57,15 @@ public class MusicBean implements Serializable {
     private int selectedId;
     private boolean notValid;
 
+    // @Inject
+    // @RestClient
+    // private MusicClient musicClient;
     @Inject
     @RestClient
-    private MusicClient musicClient;
+    private QueryClient queryClient;
+    @Inject
+    @RestClient
+    private CommandClient commandClient;
 
     @Inject
     @ManagedProperty(value = "#{pageDispatcher}")
@@ -140,7 +148,7 @@ public class MusicBean implements Serializable {
     public void submitToService() {
         // String time = createStoredTime();
         try {
-            musicClient.addSong(name, artist, price, likes);
+            commandClient.addSong(name, artist, price, likes);
             pageDispatcher.showMainPage();
             clear();
        } catch (UnknownUrlException e) { 
@@ -157,7 +165,7 @@ public class MusicBean implements Serializable {
     public void submitUpdateToService() {
         // String time = createStoredTime();
         try {
-            musicClient.updateSong(this.name, this.artist, this.price, this.selectedId);
+            commandClient.updateSong(this.name, this.artist, this.price, this.selectedId);
             pageDispatcher.showMainPage();
             clear();
         } catch (UnknownUrlException e) {
@@ -168,11 +176,11 @@ public class MusicBean implements Serializable {
     }
 
     public void editSong() {
-        JsonObject song = retrieveSongByCurrentId(this.selectedId);
+        JsonObject song = retrieveSongById(this.selectedId);
         this.name = song.getString("name");
         this.artist = song.getString("artist");
         this.price = song.getString("price");
-        this.selectedId = song.getInt("id");
+        this.likes = song.getString("likes");
 
         pageDispatcher.showEditPage();
     }
@@ -182,7 +190,7 @@ public class MusicBean implements Serializable {
      */
     public void submitDeletetoService() {
         try {
-            musicClient.deleteSong(this.selectedId);
+            commandClient.deleteSong(this.selectedId);
         } catch (UnknownUrlException e) {
             System.err.println("The given URL is unreachable");
         }
@@ -193,9 +201,22 @@ public class MusicBean implements Serializable {
     /**
      * Retrieve the list of songs from back end service.
      */
+    public JsonArray retrieveEventList() {
+        try {
+            return queryClient.getSongs();
+        } catch (UnknownUrlException e){
+            System.err.println("The given URL is unreachable.");
+            return null;
+        }
+    }
+
+
+    /**
+     * Retrieve the list of songs from back end service.
+     */
     public JsonArray retrieveSongList() {
         try {
-            return musicClient.getSongs();
+            return queryClient.getSongs();
         } catch (UnknownUrlException e){
             System.err.println("The given URL is unreachable.");
             return null;
@@ -205,9 +226,9 @@ public class MusicBean implements Serializable {
     /**
      * Retrieve a selected song by Id
      */
-    public JsonObject retrieveSongByCurrentId(int currentId) {
+    public JsonObject retrieveSongById(int selectedId) {
         try {
-            return musicClient.getSong(currentId);
+            return queryClient.getSong(selectedId);
         } catch (UnknownUrlException e) {
             System.err.println("The given URL is unreachable");
             return null;
