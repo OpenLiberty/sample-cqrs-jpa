@@ -53,9 +53,9 @@ public class MusicResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Transactional
     public Response addNewMusic(@FormParam("name") String name,
-        @FormParam("artist") String artist, @FormParam("price") String price, @FormParam("likes") String likes) {
-        Music newMusic = new Music(name, artist, price, likes);
-        if(!writeDAO.findMusic(name, artist, price, likes).isEmpty()) {
+        @FormParam("artist") String artist, @FormParam("price") String price) {
+        Music newMusic = new Music(name, artist, price, "0");
+        if(!writeDAO.findMusic(name, artist, price, "0").isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                            .entity("Music already exists").build();
         }
@@ -72,29 +72,27 @@ public class MusicResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Transactional
     public Response updateMusic(@FormParam("name") String name,
-        @FormParam("artist") String artist, @FormParam("price") String price, @FormParam("likes") String likes,
+        @FormParam("artist") String artist, @FormParam("price") String price,
         @PathParam("id") int id) {
         Music prevMusic = writeDAO.readMusic(id);
         if(prevMusic == null) {
             return Response.status(Response.Status.NOT_FOUND)
                            .entity("Music does not exist").build();
         }
-        if(!writeDAO.findMusic(name, artist, price, likes).isEmpty()) {
+        if(!writeDAO.findMusic(name, artist, price, prevMusic.getLikes()).isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                            .entity("Music already exists").build();
         }
         prevMusic.setName(name);
         prevMusic.setArtist(artist);
         prevMusic.setPrice(price);
-        prevMusic.setLikes(likes);
 
         writeDAO.updateMusic(prevMusic);
         return Response.status(Response.Status.NO_CONTENT).build(); 
     }
 
     @PUT
-    @Path("{id}")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("likes/{id}")
     @Transactional
     public Response addLike(
         @PathParam("id") int id) {
