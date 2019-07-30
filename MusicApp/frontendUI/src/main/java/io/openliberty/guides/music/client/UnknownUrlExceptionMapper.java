@@ -10,7 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.event.client;
+package io.openliberty.guides.music.client;
 
 import java.util.logging.Logger;
 import javax.ws.rs.core.MultivaluedMap;

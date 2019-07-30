@@ -10,7 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.event.ui.util;
+package io.openliberty.guides.music.ui.util;
 
 import java.io.Serializable;
 import java.text.DateFormat;

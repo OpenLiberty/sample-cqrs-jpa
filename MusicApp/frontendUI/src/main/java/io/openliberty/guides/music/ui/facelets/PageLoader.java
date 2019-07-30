@@ -10,7 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.event.ui.facelets;
+package io.openliberty.guides.music.ui.facelets;
 
 import javax.inject.Named;
 import java.io.Serializable;
@@ -25,7 +25,7 @@ public class PageLoader implements Serializable {
     private String content = "content/mainPage.xhtml";
     private String headerContent = "header/header.xhtml";
     private String navBar = "navBar/leftNav.xhtml";
-    private String currentPage = "Events";
+    private String currentPage = "Music";
 
     public String getContent() {
         return content;

@@ -21,52 +21,52 @@
   <ui:composition>
     <h1 class="list">Click on the left buttons to:</h1>
     <h:outputText class="list tab"
-      value="&#8226; &#8201; See list of current events" />
+      value="&#8226; &#8201; See list of available music" />
     <br />
     <h:outputText class="list tab"
-      value="&#8226; &#8201; Create a new event" />
+      value="&#8226; &#8201; Create a new song" />
     <br />
-    <div id="listOfevents">
+    <div id="listOfSongs">
       <div class="forms_title" style="line-height: 0;">
-        <h2>Current Events</h2>
+        <h2>Available Music</h2>
       </div>
       <br />
       <h:form id="mainform">
-        <h:outputText style="font-size: 1.1vw;" value="No events are currently running."
-          rendered="#{empty eventBean.retrieveEventList()}" />
-        <h:dataTable value="#{eventBean.retrieveEventList()}" var="event"
-          styleClass="event-table" headerClass="event-table-header"
+        <h:outputText style="font-size: 1.1vw;" value="No songs are currently available."
+          rendered="#{empty musicBean.retrieveSongList()}" />
+        <h:dataTable value="#{musicBean.retrieveSongList()}" var="song"
+          styleClass="song-table" headerClass="song-table-header"
           columnClasses="column1,column2,column3,column4,column5,column6"
-          rendered="#{not empty eventBean.retrieveEventList()}">
+          rendered="#{not empty musicBean.retrieveEventList()}">
           <h:column>
-            <f:facet name="header">Event ID</f:facet>
-            #{event.getInt("id")}
+            <f:facet name="header">Song ID</f:facet>
+            #{song.getInt("id")}
           </h:column>
           <h:column>
-            <f:facet name="header">Name</f:facet>
-            #{event.getString("name")}
+            <f:facet name="header">Name of Song</f:facet>
+            #{song.getString("name")}
           </h:column>
           <h:column>
-            <f:facet name="header">Location</f:facet>
-            #{event.getString("location")}
+            <f:facet name="header">Artist</f:facet>
+            #{song.getString("artist")}
           </h:column>
           <h:column>
-            <f:facet name="header">Time</f:facet>
-            #{event.getString("time")}
+            <f:facet name="header">Price</f:facet>
+            #{song.getString("price")}
           </h:column>
           <h:column>
             <f:facet name="header"></f:facet>
-            <h:commandLink class="eventsLink" value="Update"
-              action="#{eventBean.editEvent()}">
-              <f:actionListener binding="#{eventBean.setSelectedId(event.getInt('id'))}" />
+            <h:commandLink class="songsLink" value="Update"
+              action="#{musicBean.editSong()}">
+              <f:actionListener binding="#{musicBean.setSelectedId(song.getInt('id'))}" />
               <f:ajax execute="mainform" render=":content header" />
             </h:commandLink>
           </h:column>
           <h:column>
             <f:facet name="header"></f:facet>
-            <h:commandLink class="eventsLink" value="Delete"
-              action="#{eventBean.submitDeletetoService()}">
-              <f:actionListener binding="#{eventBean.setSelectedId(event.getInt('id'))}" />
+            <h:commandLink class="songsLink" value="Delete"
+              action="#{musicBean.submitDeletetoService()}">
+              <f:actionListener binding="#{musicBean.setSelectedId(song.getInt('id'))}" />
               <f:ajax execute="mainform" render=":content header" />
             </h:commandLink>
           </h:column>

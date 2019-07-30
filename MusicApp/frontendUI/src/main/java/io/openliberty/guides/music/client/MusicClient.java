@@ -10,7 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.event.client;
+package io.openliberty.guides.music.client;
 
 import javax.enterprise.context.Dependent;
 import javax.ws.rs.GET;
@@ -34,33 +34,33 @@ import javax.json.JsonArray;
 @RegisterRestClient
 @RegisterProvider(UnknownUrlExceptionMapper.class)
 @RegisterProvider(BadRequestExceptionMapper.class)
-@Path("/events")
-public interface EventClient {
+@Path("/music")
+public interface MusicClient {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getEvents() throws UnknownUrlException;
+    public JsonArray getSongs() throws UnknownUrlException;
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject getEvent(@PathParam("id") int eventId) throws UnknownUrlException;
+    public JsonObject getSong(@PathParam("id") int songId) throws UnknownUrlException;
 
     @DELETE
     @Path("/{id}")
-    public void deleteEvent(@PathParam("id") int eventId) throws UnknownUrlException;
+    public void deleteSong(@PathParam("id") int songId) throws UnknownUrlException;
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void addEvent(@FormParam("name") String name,
-        @FormParam("time") String time, @FormParam("location") String location) throws 
+    public void addSong(@FormParam("name") String name,
+        @FormParam("artist") String artist, @FormParam("price") String price, String likes) throws 
         UnknownUrlException, BadRequestException;
 
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void updateEvent(@FormParam("name") String name,
-        @FormParam("time") String time, @FormParam("location") String location, 
+    public void updateSong(@FormParam("name") String name,
+        @FormParam("artist") String artist, @FormParam("price") String price, 
         @PathParam("id") int id) throws UnknownUrlException, BadRequestException;
 
 }
