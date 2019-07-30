@@ -10,7 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.event.ui;
+package io.openliberty.guides.music.ui;
 
 import java.util.Map;
 
@@ -20,11 +20,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.BadRequestException;
 
-import io.openliberty.guides.event.ui.facelets.PageDispatcher;
-import io.openliberty.guides.event.ui.util.TimeMapUtil;
-import io.openliberty.guides.event.client.EventClient;
+import io.openliberty.guides.music.ui.facelets.PageDispatcher;
+import io.openliberty.guides.music.ui.util.TimeMapUtil;
+import io.openliberty.guides.music.client.MusicClient;
+import io.openliberty.guides.music.client.QueryClient;
+import io.openliberty.guides.music.client.CommandClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import io.openliberty.guides.event.client.UnknownUrlException;
+import io.openliberty.guides.music.client.UnknownUrlException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -43,23 +45,27 @@ import java.util.Date;
 
 @Named
 @ViewScoped
-public class EventBean implements Serializable {
+public class MusicBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String name;
-    private String location;
-    private String day;
-    private String month;
-    private String year;
-    private String hour;
+    private String artist;
+    private String price;
+    private String likes;
+    private ComponentSystemEvent currentComponent;
     private int selectedId;
     private boolean notValid;
-    private ComponentSystemEvent currentComponent;
 
+    // @Inject
+    // @RestClient
+    // private MusicClient musicClient;
     @Inject
     @RestClient
-    private EventClient eventClient;
+    private QueryClient queryClient;
+    @Inject
+    @RestClient
+    private CommandClient commandClient;
 
     @Inject
     @ManagedProperty(value = "#{pageDispatcher}")
@@ -69,48 +75,32 @@ public class EventBean implements Serializable {
         this.name = name;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
-    public void setHour(String hour) {
-        this.hour = hour;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public void setMonth(String month) {
-        this.month = month;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
+    public void setLikes(String likes) {
+        this.likes = likes;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public String getLocation() {
-        return this.location;
+    public String getArtist() {
+        return this.artist;
     }
 
-    public String getHour() {
-        return this.hour;
+    public String getPrice() {
+        return this.price;
     }
 
-    public String getDay() {
-        return this.day;
-    }
-
-    public String getMonth() {
-        return this.month;
-    }
-
-    public String getYear() {
-        return this.year;
+    public String getLikes() {
+        return this.likes;
     }
 
     public boolean getNotValid() {
@@ -130,14 +120,14 @@ public class EventBean implements Serializable {
     }
 
     /**
-     * Set a selected event id.
+     * Set a selected song id.
      */
     public void setSelectedId(int selectedId) {
         this.selectedId = selectedId;
     }
 
     /**
-     * Remove stored event id.
+     * Remove stored song id.
      */
     public void removeSelectedId() {
         this.selectedId = -1;
@@ -153,12 +143,12 @@ public class EventBean implements Serializable {
     }
 
     /**
-     * Submit event form data to back end service.
+     * Submit song form data to back end service.
      */
     public void submitToService() {
-        String time = createStoredTime();
+        // String time = createStoredTime();
         try {
-            eventClient.addEvent(name, time, location);
+            commandClient.addSong(name, artist, price, likes);
             pageDispatcher.showMainPage();
             clear();
        } catch (UnknownUrlException e) { 
@@ -170,12 +160,12 @@ public class EventBean implements Serializable {
     }
 
     /**
-     * Submit updated event form data to back end service.
+     * Submit updated song form data to back end service.
      */
     public void submitUpdateToService() {
-        String time = createStoredTime();
+        // String time = createStoredTime();
         try {
-            eventClient.updateEvent(this.name, time, this.location, this.selectedId);
+            commandClient.updateSong(this.name, this.artist, this.price, this.selectedId);
             pageDispatcher.showMainPage();
             clear();
         } catch (UnknownUrlException e) {
@@ -185,16 +175,12 @@ public class EventBean implements Serializable {
         }
     }
 
-    public void editEvent() {
-        JsonObject event = retrieveEventByCurrentId(this.selectedId);
-        String[] fullDateInfo = parseTime(event.getString("time"));
-        this.hour = fullDateInfo[0] + " " + fullDateInfo[1];
-        this.month = fullDateInfo[2];
-        this.day = fullDateInfo[3];
-        this.year = fullDateInfo[4];
-        this.name = event.getString("name");
-        this.location = event.getString("location");
-        this.selectedId = event.getInt("id");
+    public void editSong() {
+        JsonObject song = retrieveSongById(this.selectedId);
+        this.name = song.getString("name");
+        this.artist = song.getString("artist");
+        this.price = song.getString("price");
+        this.likes = song.getString("likes");
 
         pageDispatcher.showEditPage();
     }
@@ -204,7 +190,7 @@ public class EventBean implements Serializable {
      */
     public void submitDeletetoService() {
         try {
-            eventClient.deleteEvent(this.selectedId);
+            commandClient.deleteSong(this.selectedId);
         } catch (UnknownUrlException e) {
             System.err.println("The given URL is unreachable");
         }
@@ -213,11 +199,24 @@ public class EventBean implements Serializable {
     }
 
     /**
-     * Retrieve the list of events from back end service.
+     * Retrieve the list of songs from back end service.
      */
     public JsonArray retrieveEventList() {
         try {
-            return eventClient.getEvents();
+            return queryClient.getSongs();
+        } catch (UnknownUrlException e){
+            System.err.println("The given URL is unreachable.");
+            return null;
+        }
+    }
+
+
+    /**
+     * Retrieve the list of songs from back end service.
+     */
+    public JsonArray retrieveSongList() {
+        try {
+            return queryClient.getSongs();
         } catch (UnknownUrlException e){
             System.err.println("The given URL is unreachable.");
             return null;
@@ -225,11 +224,11 @@ public class EventBean implements Serializable {
     }
 
     /**
-     * Retrieve a selected event by Id
+     * Retrieve a selected song by Id
      */
-    public JsonObject retrieveEventByCurrentId(int currentId) {
+    public JsonObject retrieveSongById(int selectedId) {
         try {
-            return eventClient.getEvent(currentId);
+            return queryClient.getSong(selectedId);
         } catch (UnknownUrlException e) {
             System.err.println("The given URL is unreachable");
             return null;
@@ -295,30 +294,28 @@ public class EventBean implements Serializable {
     }
 
     /**
-     * Displays the error message if time is not valid or the event already exists
+     * Displays the error message if time is not valid or the song already exists
      */
     public void displayError(boolean display) {
         notValid = display;
     }
 
     /**
-     *  Method to clean the bean after form submission and before event creation form
+     *  Method to clean the bean after form submission and before song creation form
      */
     public void clear() {
         setName(null);
-        setLocation(null);
-        setDay(null);
-        setMonth(null);
-        setYear(null);
-        setHour(null);
+        setArtist(null);
+        setPrice(null);
+        setLikes(null);
     }
 
     /**
      * Helper method to create the time string to be stored at the back end.
      */
-    private String createStoredTime() {
-        return hour + ", " + month + " " + day + " " + year;
-    }
+    // private String createStoredTime() {
+    //     return hour + ", " + month + " " + day + " " + year;
+    // }
 
     /**
      * Parses time (in format: hh:mm AM, dd mm yyyy) into time, meridiem, month,

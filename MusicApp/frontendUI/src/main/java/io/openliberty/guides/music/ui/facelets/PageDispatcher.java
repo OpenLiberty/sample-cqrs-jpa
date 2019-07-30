@@ -10,7 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.event.ui.facelets;
+package io.openliberty.guides.music.ui.facelets;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -40,19 +40,19 @@ public class PageDispatcher implements Serializable {
         this.pageLoader = pageLoader;
     }
 
-    public void showEventForm() {
-        pageLoader.setContent("content/eventForm.xhtml");
-        pageLoader.setCurrentPage("Event Creation");
+    public void showSongForm() {
+        pageLoader.setContent("content/songForm.xhtml");
+        pageLoader.setCurrentPage("Song Creation");
     }
 
     public void showMainPage() {
         pageLoader.setContent("content/mainPage.xhtml");
-        pageLoader.setCurrentPage("Events");
+        pageLoader.setCurrentPage("Music");
     }
 
     public void showEditPage() {
-        pageLoader.setContent("content/updateEventForm.xhtml");
-        pageLoader.setCurrentPage("Edit Event");
+        pageLoader.setContent("content/updateSongForm.xhtml");
+        pageLoader.setCurrentPage("Edit Song");
     }
 
 }
