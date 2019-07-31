@@ -50,7 +50,7 @@ public class MusicResource {
      * This method creates a new event from the submitted data (name, time and
      * location) by the user.
      */
-    @POST
+/*     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Transactional
     public Response addNewMusic(@FormParam("name") String name,
@@ -62,7 +62,7 @@ public class MusicResource {
         }
         readDAO.createMusic(newMusic);
         return Response.status(Response.Status.NO_CONTENT).build(); 
-    }
+    } */
 
     /**
      * This method updates a new event from the submitted data (name, time and

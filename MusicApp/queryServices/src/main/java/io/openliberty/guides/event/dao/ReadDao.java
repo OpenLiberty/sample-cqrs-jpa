@@ -25,10 +25,6 @@ public class ReadDao {
 
     @PersistenceContext(name = "jpa-unit")
     private EntityManager emRead;
-
-    public void createMusic(Music music) {
-        emRead.persist(music);
-    }
  
     public Music readMusic(int musicId){
         return emRead.find(Music.class, musicId);
