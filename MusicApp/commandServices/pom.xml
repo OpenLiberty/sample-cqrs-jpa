@@ -75,11 +75,16 @@
             <artifactId>activation</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
             <version>10.14.2.0</version>
             <scope>test</scope>
+        </dependency> -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.17</version>
         </dependency>
     </dependencies>
     <build>
@@ -90,14 +95,14 @@
                 <version>2.10</version>
                 <executions>
                     <execution>
-                        <id>copy-derby-dependency</id>
+                        <id>copy-mysql-dependency</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeArtifactIds>derby</includeArtifactIds>
-                            <outputDirectory>${project.build.directory}/liberty/wlp/usr/shared/resources/</outputDirectory>
+                            <includeArtifactIds>mysql-connector-java</includeArtifactIds>
+                            <outputDirectory>${project.build.directory}/liberty/wlp/usr/shared/resources/mysql</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

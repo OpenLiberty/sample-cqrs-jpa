@@ -12,17 +12,20 @@
 
   <application location="queryServices.war" type="war" context-root="/">
   </application>
+  
+<!-- Declare the jar files for MySQL access through JDBC. -->
+<library id="MySQLLib">
+  <fileset dir="${shared.resource.dir}/mysql" includes="*.jar"/>
+</library>
 
-  <!-- Derby Library Configuration -->    
-  <library id="derbyJDBCLib">
-      <fileset dir="${shared.resource.dir}" includes="derby*.jar"/>
-  </library>
 
-  <!-- Datasource Configuration -->
-  <dataSource id="eventjpadatasource"
-              jndiName="jdbc/eventjpadatasource">
-      <jdbcDriver libraryRef="derbyJDBCLib" />
-      <properties.derby.embedded databaseName="EventDB" createDatabase="create"/>
+<!-- Declare the runtime database -->
+  <dataSource id="musicjpadatasource"
+              jndiName="jdbc/musicjpadatasource">
+      <jdbcDriver libraryRef="MySQLLib" />
+      <properties databaseName="MusicDB" 
+            serverName="localhost" portNumber="3306" 
+            user="root" password="example"/>
   </dataSource>
 
 </server>
