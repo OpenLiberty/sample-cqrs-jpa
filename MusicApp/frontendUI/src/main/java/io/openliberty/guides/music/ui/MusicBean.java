@@ -22,7 +22,6 @@ import javax.ws.rs.BadRequestException;
 
 import io.openliberty.guides.music.ui.facelets.PageDispatcher;
 import io.openliberty.guides.music.ui.util.TimeMapUtil;
-import io.openliberty.guides.music.client.MusicClient;
 import io.openliberty.guides.music.client.QueryClient;
 import io.openliberty.guides.music.client.CommandClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -142,18 +141,29 @@ public class MusicBean implements Serializable {
         return TimeMapUtil.getMappedDate(storedTime);
     }
 
+    public void printValues() {
+        System.out.println("Dummy function");
+        System.out.println(name);
+        System.out.println(artist);
+        System.out.println(price);
+    }
+
     /**
      * Submit song form data to back end service.
      */
     public void submitToService() {
         // String time = createStoredTime();
+        System.out.println("Inside submitToService");
         try {
-            commandClient.addSong(name, artist, price, likes);
+            System.out.println("Inside try block for submitToService");
+            commandClient.addSong(name, artist, price);
             pageDispatcher.showMainPage();
             clear();
        } catch (UnknownUrlException e) { 
+            System.out.println("catch unknown url");
             System.err.println("The given URL is unreachable.");
         } catch (BadRequestException e) {
+            System.out.println("catch badrequest exception");
             displayInvalidEventError();
         }
 
@@ -164,13 +174,17 @@ public class MusicBean implements Serializable {
      */
     public void submitUpdateToService() {
         // String time = createStoredTime();
+        System.out.println("Inside submitUPDATEToService");
         try {
+            System.out.println("Inside submitUPDATEToService TRY BLOCK");
             commandClient.updateSong(this.name, this.artist, this.price, this.selectedId);
             pageDispatcher.showMainPage();
             clear();
         } catch (UnknownUrlException e) {
+            System.out.println("Inside submitUPDATEToService CATCH 1");
             System.err.println("The given URL is unreachable");
         } catch (BadRequestException e) {
+            System.out.println("Inside submitUPDATEToService CATCH 2");
             displayInvalidEventError();
         }
     }
@@ -180,7 +194,7 @@ public class MusicBean implements Serializable {
         this.name = song.getString("name");
         this.artist = song.getString("artist");
         this.price = song.getString("price");
-        this.likes = song.getString("likes");
+        // this.likes = song.getString("likes");
 
         pageDispatcher.showEditPage();
     }
@@ -333,7 +347,7 @@ public class MusicBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         FacesMessage message = new FacesMessage(errorMessage);
         HtmlPanelGroup divEventTime = (HtmlPanelGroup) event.getComponent()
-            .findComponent("eventform:eventTime");
+            .findComponent("music:eventTime");
         context.addMessage(divEventTime.getClientId(context), message);
     }
 
@@ -342,7 +356,7 @@ public class MusicBean implements Serializable {
      */
     private UIInput getUnitOfTimeOptions(ComponentSystemEvent event, String unit) {
         UIComponent components = event.getComponent();
-        UIInput unitOptions = (UIInput) components.findComponent("eventform:" + unit);
+        UIInput unitOptions = (UIInput) components.findComponent("musicform:" + unit);
         return unitOptions;
     }
 
@@ -360,7 +374,7 @@ public class MusicBean implements Serializable {
     private void allowSubmission(ComponentSystemEvent event, boolean allowSubmission) {
         UIComponent components = event.getComponent();
         HtmlInputHidden formInput = (HtmlInputHidden) components
-            .findComponent("eventform:eventSubmit");
+            .findComponent("musicform:eventSubmit");
         formInput.setValid(allowSubmission);
     }
 
