@@ -53,7 +53,7 @@ public interface CommandClient {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void addSong(@FormParam("name") String name,
-        @FormParam("artist") String artist, @FormParam("price") String price, String likes) throws 
+        @FormParam("artist") String artist, @FormParam("price") String price) throws 
         UnknownUrlException, BadRequestException;
 
     @PUT

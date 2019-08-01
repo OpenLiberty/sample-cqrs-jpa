@@ -41,16 +41,19 @@ public class PageDispatcher implements Serializable {
     }
 
     public void showSongForm() {
+        System.out.println("Showing song form");
         pageLoader.setContent("content/songForm.xhtml");
         pageLoader.setCurrentPage("Song Creation");
     }
 
     public void showMainPage() {
+        System.out.println("Showing main page");
         pageLoader.setContent("content/mainPage.xhtml");
         pageLoader.setCurrentPage("Music");
     }
 
     public void showEditPage() {
+        System.out.println("Showing edit page");
         pageLoader.setContent("content/updateSongForm.xhtml");
         pageLoader.setCurrentPage("Edit Song");
     }
