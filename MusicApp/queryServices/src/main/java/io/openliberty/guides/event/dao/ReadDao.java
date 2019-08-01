@@ -27,12 +27,19 @@ public class ReadDao {
     private EntityManager emRead;
  
     public Music readMusic(int musicId){
-        return emRead.find(Music.class, musicId);
+        Music temp = emRead.find(Music.class, musicId);
+        if (temp != null) {
+            emRead.refresh(temp);
+        }
+        return temp;
     };
 
     public List<Music> readAllMusic(){
-        return emRead.createNamedQuery("Music.findAll", Music.class).getResultList();
-        
+        List<Music> allMusic = emRead.createNamedQuery("Music.findAll", Music.class).getResultList();
+        for (Music music : allMusic) {
+            emRead.refresh(music);
+        }
+        return allMusic;
     };
   
     public List<Music> findMusic(String name, String artist, String price, String likes) {
