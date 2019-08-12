@@ -28,6 +28,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.BadRequestException;
 
 import javax.json.JsonObject;
+import javax.transaction.Transactional;
 import javax.json.JsonArray;
 
 @Dependent
@@ -62,5 +63,9 @@ public interface CommandClient {
     public void updateSong(@FormParam("name") String name,
         @FormParam("artist") String artist, @FormParam("price") String price, 
         @PathParam("id") int id) throws UnknownUrlException, BadRequestException;
+    
+    @PUT
+    @Path("likes/{id}")
+    public void addLike(@PathParam("id") int id) throws UnknownUrlException, BadRequestException;
 
 }

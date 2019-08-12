@@ -182,6 +182,21 @@ public class MusicBean implements Serializable {
             displayInvalidEventError();
         }
     }
+    
+    /**
+     * Submit addLike form data to back end service.
+     */
+    public void submitAddLike(){
+    	try{
+    		commandClient.addLike(this.selectedId);
+    		pageDispatcher.showMainPage();
+            clear();
+    	} catch (UnknownUrlException e) {
+            System.err.println("The given URL is unreachable");
+        } catch (BadRequestException e) {
+            displayInvalidEventError();
+        }
+    }
 
     public void editSong() {
         JsonObject song = retrieveSongById(this.selectedId);

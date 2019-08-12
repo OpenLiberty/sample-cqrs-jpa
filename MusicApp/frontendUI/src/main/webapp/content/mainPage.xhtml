@@ -55,6 +55,10 @@
             #{song.getString("price")}
           </h:column>
           <h:column>
+            <f:facet name="header">Likes</f:facet>
+            #{song.getString("likes")}
+          </h:column>
+          <h:column>
             <f:facet name="header"></f:facet>
             <h:commandLink class="songsLink" value="Update"
               action="#{musicBean.editSong()}">
@@ -63,9 +67,17 @@
             </h:commandLink>
           </h:column>
           <h:column>
-            <f:facet name="header"></f:facet>
+          <f:facet name="header"></f:facet>
             <h:commandLink class="songsLink" value="Delete"
               action="#{musicBean.submitDeletetoService()}">
+              <f:actionListener binding="#{musicBean.setSelectedId(song.getInt('id'))}" />
+              <f:ajax execute="mainform" render=":content header" />
+            </h:commandLink>
+          </h:column>
+          <h:column>
+            <f:facet name="header"></f:facet>
+            <h:commandLink class="songsLink" value="Add Like"
+              action="#{musicBean.submitAddLike()}">
               <f:actionListener binding="#{musicBean.setSelectedId(song.getInt('id'))}" />
               <f:ajax execute="mainform" render=":content header" />
             </h:commandLink>
