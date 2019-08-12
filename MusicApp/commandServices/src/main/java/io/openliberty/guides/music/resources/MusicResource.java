@@ -79,10 +79,10 @@ public class MusicResource {
             return Response.status(Response.Status.NOT_FOUND)
                            .entity("Music does not exist").build();
         }
-        if(!writeDAO.findMusic(name, artist, price, prevMusic.getLikes()).isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                           .entity("Music already exists").build();
-        }
+//        if(!writeDAO.findMusic(name, artist, price, prevMusic.getLikes()).isEmpty()) {
+//            return Response.status(Response.Status.BAD_REQUEST)
+//                           .entity("Music already exists").build();
+//        }
         prevMusic.setName(name);
         prevMusic.setArtist(artist);
         prevMusic.setPrice(price);
@@ -133,8 +133,10 @@ public class MusicResource {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         Music music = writeDAO.readMusic(musicId);
         if(music != null) {
+        	if (music.getName() != null && music.getPrice() != null && music.getArtist() != null && music.getLikes() != null){
             builder.add("name", music.getName()).add("artist", music.getArtist())
                 .add("price", music.getPrice()).add("likes", music.getLikes()).add("id", music.getId());
+        	}
         }
         return builder.build();
     }
@@ -149,9 +151,13 @@ public class MusicResource {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder finalArray = Json.createArrayBuilder();
         for (Music music : writeDAO.readAllMusic()) {
+        	if (music.getName() != null && music.getPrice() != null && music.getArtist() != null && music.getLikes() != null){
             builder.add("name", music.getName()).add("price", music.getPrice())
                    .add("artist", music.getArtist()).add("id", music.getId()).add("likes", music.getLikes());
             finalArray.add(builder.build());
+        	}else{
+         		continue;
+         	}
         }
         return finalArray.build();
     } 

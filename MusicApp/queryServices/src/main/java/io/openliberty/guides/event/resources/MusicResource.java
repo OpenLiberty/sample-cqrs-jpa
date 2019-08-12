@@ -119,8 +119,10 @@ public class MusicResource {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         Music music = readDAO.readMusic(musicId);
         if(music != null) {
+        	if (music.getName() != null && music.getPrice() != null && music.getArtist() != null && music.getLikes() != null){
             builder.add("name", music.getName()).add("price", music.getPrice())
                 .add("artist", music.getArtist()).add("id", music.getId()).add("likes", music.getLikes());
+           	}
         }
         return builder.build();
     }
@@ -135,9 +137,13 @@ public class MusicResource {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder finalArray = Json.createArrayBuilder();
         for (Music music : readDAO.readAllMusic()) {
+        	if (music.getName() != null && music.getPrice() != null && music.getArtist() != null && music.getLikes() != null){
             builder.add("name", music.getName()).add("price", music.getPrice())
                    .add("artist", music.getArtist()).add("id", music.getId()).add("likes", music.getLikes());
             finalArray.add(builder.build());
+        	} else{
+         		continue;
+         	}
         }
         return finalArray.build();
     }

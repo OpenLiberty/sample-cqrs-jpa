@@ -23,13 +23,13 @@
     <h:form>
       <h:commandButton class="button" value="Music"
         action="#{pageDispatcher.showMainPage}">
-        <f:ajax render=":content header" />
+        <!-- <f:ajax render=":content header" /> -->
       </h:commandButton>
     </h:form>
     <h:form>
       <h:commandButton class="button" value="Add Song"
         action="#{pageDispatcher.showSongForm}">
-        <f:ajax render=":sidebar content header" />
+       <!--  <f:ajax render=":sidebar content header" /> -->
         <f:actionListener binding="#{musicBean.displayError(true)}" />
         <f:actionListener binding="#{musicBean.clear()}" />
       </h:commandButton>
