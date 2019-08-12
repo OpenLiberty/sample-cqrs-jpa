@@ -26,6 +26,7 @@ import javax.persistence.GenerationType;
 @NamedQuery(name = "Music.findAll", query = "SELECT m FROM Music m")
 @NamedQuery(name = "Music.findMusic", query = "SELECT m FROM Music m WHERE "
     + "m.name = :name AND m.artist = :artist AND m.price = :price AND m.likes = :likes ")
+@NamedQuery(name = "Music.findTop", query = "SELECT m FROM Music m ORDER BY m.likes DESC")
 public class Music implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -33,7 +34,6 @@ public class Music implements Serializable {
     @Id
     @Column(name = "musicId")
     private int id;
-
     @Column(name = "musicName")
     private String name;
     @Column(name = "musicArtist")
@@ -116,13 +116,6 @@ public class Music implements Serializable {
         } else if (!artist.equals(other.artist)) {
             return false;
         }
-/*         if (likes == null) {
-            if (other.likes != null) {
-                return false;
-            }
-        } else if (!likes.equals(other.likes)) {
-            return false;
-        } */
         if (name == null) {
             if (other.name != null) {
                 return false;

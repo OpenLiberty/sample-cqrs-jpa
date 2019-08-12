@@ -41,6 +41,14 @@ public class ReadDao {
         }
         return allMusic;
     };
+
+    public List<Music> readTopMusic(){
+        List<Music> allMusic = emRead.createNamedQuery("Music.findTop", Music.class).setMaxResults(10).getResultList();
+        for (Music music : allMusic) {
+            emRead.refresh(music);
+        }
+        return allMusic;
+    }
   
     public List<Music> findMusic(String name, String artist, String price, String likes) {
         return emRead.createNamedQuery("Music.findMusic", Music.class)
