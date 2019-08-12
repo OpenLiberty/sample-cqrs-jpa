@@ -31,7 +31,7 @@ import javax.json.JsonObject;
 import javax.json.JsonArray;
 
 @Dependent
-@RegisterRestClient
+@RegisterRestClient(baseUri="http://localhost:5050")
 @RegisterProvider(UnknownUrlExceptionMapper.class)
 @RegisterProvider(BadRequestExceptionMapper.class)
 @Path("/music")

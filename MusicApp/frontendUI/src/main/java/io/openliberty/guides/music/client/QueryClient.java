@@ -31,7 +31,7 @@ import javax.json.JsonObject;
 import javax.json.JsonArray;
 
 @Dependent
-@RegisterRestClient
+@RegisterRestClient(baseUri="http://localhost:6050")
 @RegisterProvider(UnknownUrlExceptionMapper.class)
 @RegisterProvider(BadRequestExceptionMapper.class)
 @Path("/music")
@@ -50,11 +50,11 @@ public interface QueryClient {
     @Path("/{id}")
     public void deleteSong(@PathParam("id") int songId) throws UnknownUrlException;
 
-    // @POST
-    // @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    // public void addSong(@FormParam("name") String name,
-    //     @FormParam("artist") String artist, @FormParam("price") String price, String likes) throws 
-    //     UnknownUrlException, BadRequestException;
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void addSong(@FormParam("name") String name,
+        @FormParam("artist") String artist, @FormParam("price") String price) throws 
+        UnknownUrlException, BadRequestException;
 
     @PUT
     @Path("/{id}")
