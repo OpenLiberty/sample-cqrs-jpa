@@ -8,12 +8,12 @@ body {
 
 #header-container {
   height: 14%;
-  border-bottom: 4px solid black;
+  border-bottom: 4px solid white;
   min-height: 100px;
 }
 
 #header {
-  background: #008B8B;
+  background: #87BBA2;
   height: 100%;
 }
 
@@ -26,11 +26,11 @@ body {
 
 #sidebar {
   float: left;
-  background: #d5d5d5;
+  background: #F0F7EE;
   width: 10%;
   height: 100%;
   min-height: 300px;
-  border-right: 5px solid black;
+  border-right: 5px solid white;
 }
 
 .button {
@@ -38,7 +38,7 @@ body {
   min-height: 40px;
   width: 90%;
   background-color: #f7f7f7;
-  border: solid #1D1F3C;
+  border: solid #5D737E;
   border: 2%;
   font-size: 1.1vw;
   margin-left: 5%;
@@ -49,7 +49,7 @@ body {
 }
 
 .button:hover {
-  background-color: #008B8B;
+  background-color: #87BBA2;
   color: white;
   cursor: pointer;
   border: solid #1D1F3C;
@@ -57,14 +57,14 @@ body {
 }
 
 .button:focus {
-  background-color: #1D1F3C;
+  background-color: #5D737E;
   color: white;
   outline: 0;
   border: none;
 }
 
 .button:active {
-  background-color: #575ba7;
+  background-color: #87BBA2;
   color: white;
   border: none;
 }
@@ -107,7 +107,7 @@ body {
 
 .forms input[type=submit], input[type=reset] {
   width: 100%;
-  background-color: #1D1F3C;
+  background-color: #87BBA2;
   color: white;
   padding: 14px 20px;
   border: none;
@@ -118,11 +118,11 @@ body {
 }
 
 .forms input[type=submit]:hover {
-  background-color: #45498c;
+  background-color: #5D737E;
 }
 
 .forms input[type=reset]:hover {
-  background-color: #45498c;
+  background-color: #5D737E;
 }
 
 .forms input[type=submit]:focus {
@@ -223,7 +223,7 @@ h1.list {
 }
 
 .eventsLink {
-  color: #0080ff;
+  color: #5D737E;
   cursor: pointer;
   min-width: 100%;
   font-family: 'Asap', sans-serif;
