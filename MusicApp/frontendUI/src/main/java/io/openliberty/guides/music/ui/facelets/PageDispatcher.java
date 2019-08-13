@@ -57,5 +57,9 @@ public class PageDispatcher implements Serializable {
         pageLoader.setContent("content/updateSongForm.xhtml");
         pageLoader.setCurrentPage("Edit Song");
     }
-
+    
+    public void showTopTen() {
+        pageLoader.setContent("content/topTenDisplay.xhtml");
+        pageLoader.setCurrentPage("Top 10 Songs");
+    }
 }

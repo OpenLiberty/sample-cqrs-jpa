@@ -257,6 +257,18 @@ public class MusicBean implements Serializable {
             return null;
         }
     }
+    
+    /**
+     * Retrieve top 10 songs sorted by Likes
+     */
+    public JsonArray retrieveTopTen() {
+        try {
+            return queryClient.getTopMusic();
+        } catch (UnknownUrlException e) {
+            System.err.println("The given URL is unreachable");
+            return null;
+        }
+    }
 
     /**
      * Gets TimeMapUtil map for hours

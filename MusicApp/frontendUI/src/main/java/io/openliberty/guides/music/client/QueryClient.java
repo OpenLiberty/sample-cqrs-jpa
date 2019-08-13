@@ -62,5 +62,9 @@ public interface QueryClient {
     public void updateSong(@FormParam("name") String name,
         @FormParam("artist") String artist, @FormParam("price") String price, 
         @PathParam("id") int id) throws UnknownUrlException, BadRequestException;
+    
+    @GET
+    @Path("/top")
+    public JsonArray getTopMusic() throws UnknownUrlException;
 
 }

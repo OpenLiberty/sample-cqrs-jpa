@@ -34,6 +34,14 @@
         <f:actionListener binding="#{musicBean.clear()}" />
       </h:commandButton>
     </h:form>
+        <h:form>
+      <h:commandButton class="button" value="Top 10 Songs"
+        action="#{pageDispatcher.showTopTen}">
+       <!--  <f:ajax render=":sidebar content header" /> -->
+        <f:actionListener binding="#{musicBean.displayError(true)}" />
+        <f:actionListener binding="#{musicBean.clear()}" />
+      </h:commandButton>
+    </h:form>
   </ui:composition>
 </h:body>
 </html>
