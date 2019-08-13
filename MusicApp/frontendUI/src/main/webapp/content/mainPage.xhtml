@@ -36,7 +36,7 @@
           rendered="#{empty musicBean.retrieveSongList()}" />
         <h:dataTable value="#{musicBean.retrieveSongList()}" var="song"
           styleClass="song-table" headerClass="song-table-header"
-          columnClasses="column1,column2,column3,column4,column5,column6"
+          columnClasses="column1,column2,column3,column4,column5,column6,column7,column8"
           rendered="#{not empty musicBean.retrieveSongList()}">
           <h:column>
             <f:facet name="header">Song ID</f:facet>
@@ -67,7 +67,7 @@
             </h:commandLink>
           </h:column>
           <h:column>
-          <f:facet name="header"></f:facet>
+          <f:facet name="header">Commands</f:facet>
             <h:commandLink class="songsLink" value="Delete"
               action="#{musicBean.submitDeletetoService()}">
               <f:actionListener binding="#{musicBean.setSelectedId(song.getInt('id'))}" />
