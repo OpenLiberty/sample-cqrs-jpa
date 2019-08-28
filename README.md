@@ -1,8 +1,6 @@
 # sample-cqrs-jpa
 Create a CQRS pattern application
 
-https://ibm.ent.box.com/notes/485028749817
-
 # Pull docker image for mySQL
 `docker pull mysql`
 
